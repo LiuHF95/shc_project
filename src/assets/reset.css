@@ -1,0 +1,117 @@
+*{
+    margin:0;
+    padding:0;
+}
+*,*:before, *:after{
+    box-sizing: border-box;
+}
+body,html{
+    background:#F2F2F2;
+    /* min-width: 1280px; */
+    height:100%;
+    min-height:460px;
+}
+/* 宽100% */
+.w100{
+    width:100%;
+}
+/* 高100% */
+.h100{
+    height: 100%;
+}
+/* 去除图片默认边距 */
+img{
+    vertical-align:middle;
+}
+/* 清除列表样式 */
+li{
+    list-style:none;
+}
+/* 清除input框边框和聚焦时样式 */
+input,textarea{
+    border:0;
+    outline: none;
+    outline-offset: 0;
+}
+textarea{
+    resize: none;
+}
+/* 左浮动 */
+.fl{
+    float: left;
+}
+/* 右浮动 */
+.fr{
+    float: right;
+}
+/* 字体大小12px */
+.fs-12{
+    font-size: 12px;
+}
+/* 字体大小14px */
+.fs-14{
+    font-size: 14px;
+}
+/* 字体大小16px */
+.fs-16{
+    font-size: 16px;
+}
+/* 字体颜色为 #fff */
+.color-f{
+    color: #fff
+}
+/* 字体颜色为 red */
+.color-r{
+    color: red;
+}
+/* 字体颜色为 #333 */
+.color-b{
+    color:#333;
+}
+/* 背景颜色为 #fff */
+.bg-f{
+    background-color: #fff;
+}
+/* 鼠标滑过指针变手指 */
+.figer{
+    cursor: pointer;
+}
+/* 超出部分隐藏 */
+.over{
+    overflow: hidden;
+}
+.over-ell{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/* 文字居中 */
+.text-c{
+    text-align: center;
+}
+/* border-raduis：4px */
+.bor-r4{
+    border-radius: 4px;
+}
+/* 转换成块级标签 */
+.dis-b{
+    display: block;
+}
+.dis-ib{
+    display: inline-block;
+}
+.p-r10{
+    padding-right:10px;
+}
+.va-m{
+    vertical-align: middle;
+}
+.blod{
+    font-weight: bold;
+}
+.main{
+    padding-top: 60px;
+}
+.font-w{
+    font-weight: bold;
+}
