@@ -1,110 +1,224 @@
 <template>
     <div>
-        <div v-for="data in datas">
-            <!--遍历父的-->
-            <input type="checkbox"  :id="data.listTitle" value="" :checked="isTitleChecked(data)" 
-                @change="changeTitleChecked(data,$event)"/>{{data.listTitle}}
-            <div v-for="item in data.listItem">
-                <!--遍历子的-->
-                <input type="checkbox" :value="item" v-model="data.selected"/>{{item.name}}
-            </div>
-        </div>
+        <div id="map" class="mainwindow"></div>
     </div>
 </template>
 <script>
+import echarts from "echarts";
+import BMap from 'BMap'
 export default{
     data(){
         return{
-            datas : 
-            [
-                {
-                    id: 666,
-                    selected : [],
-                    listTitle : "一级标题",
-                    listItem : [
-                        {
-                            id : 1222,
-                            info:0,
-                            name : "高一"
-                        },
-                        {
-                            id : 23,
-                            info:1,
-                            name : "高二"
-                        },
-                        {
-                            id : 13,
-                            info:0,
-                            name : "高三"
-                        }
-                    ]
-                },
-                {
-                    id: 8888,
-                    selected : [],
-                    listTitle : "二级标题",
-                    listItem : [
-                        {
-                            id : 42,
-                            info:1,
-                            name : "大一"
-                        },
-                        {
-                            id : 51,
-                            info:0,
-                            name : "大二"
-                        }
-                    ]
-                }
-            ]
         }
     },
+    mounted(){
+        this.aaa()
+    },
     methods:{
-        /**
-        * 当父标题状态变化时的处理方法
-        * @param data [当前项的data]
-        * @param event [当前项的event]
-        */
-        changeTitleChecked(data,event) {
-            if (event.target.checked === true) {
-                data.listItem.forEach(function (item) {
-                    data.selected.indexOf(item) === -1 && data.selected.push(item);
-                })
-            }else {
-                data.selected = [];
-            }
-        },
-        /**
-        * 判断父标题选择状态
-        * @param data [当前项的data]
-        * @returns {boolean}
-        */
-        isTitleChecked(data) {
-            var _selected = data.selected;
-            var _listItem = data.listItem;
-            // 验证selected中是否含有全部的item的id 如果是 证明title要选中
-            return _listItem.every(function (item) {
-                return _selected.indexOf(item) != -1;
-            });
-        },
-
-        /**
-        * 全选框change事件的回调处理方法
-        * @param event 
-        */
-        changeAllChecked(event) {
-            if (event.target.checked === true) {
-                this.datas.forEach(function (data) {
-                    data.listItem.forEach(function (item) {
-                        data.selected.indexOf(item) === -1 && data.selected.push(item);
-                    })
-                })
-            }else {
-                this.datas.forEach(function (data) {
-                    data.selected = [];
-                })
-            }
-        },
+        aaa(){
+            let chartMap = document.getElementById('map');
+            let myChart = echarts.init(chartMap);
+            //手工写入的一个迁徙线的数据，正常项目中应该是由AJAX或其他方式来获取数据。
+            var linesdata = [{
+                fromName: "银泰",
+                toName: "路口",
+                coords: [
+                    [120.114271,30.305938],
+                    [120.118951,30.309134]
+                ]
+            }];
+            //echarts中使用地图的配置参数
+            var option = {
+                bmap: {
+                    // 百度地图中心经纬度 坐标拾取器http://api.map.baidu.com/lbsapi/getpoint/index.html
+                    center: [120.114271,30.305938],
+                    // 百度地图缩放等级，数字越大，放大越大，地图比例尺越小
+                    zoom: 16,
+                    // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'
+                    roam: false,
+                    // mapStyle是百度地图的自定义样式，见 http://developer.baidu.com/map/custom/
+                    mapStyle: {
+                        styleJson: [{
+                                "featureType": "water",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#021019"
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#000000"
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "geometry.stroke",
+                                "stylers": {
+                                    "color": "#147a92"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#000000"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "geometry.stroke",
+                                "stylers": {
+                                    "color": "#0b3d51"
+                                }
+                            },
+                            {
+                                "featureType": "local",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#000000"
+                                }
+                            },
+                            {
+                                "featureType": "land",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#08304b"
+                                }
+                            },
+                            {
+                                "featureType": "railway",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#000000"
+                                }
+                            },
+                            {
+                                "featureType": "railway",
+                                "elementType": "geometry.stroke",
+                                "stylers": {
+                                    "color": "#08304b"
+                                }
+                            },
+                            {
+                                "featureType": "subway",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "lightness": -70
+                                }
+                            },
+                            {
+                                "featureType": "building",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#000000"
+                                }
+                            },
+                            {
+                                "featureType": "all",
+                                "elementType": "labels.text.fill",
+                                "stylers": {
+                                    "color": "#857f7f"
+                                }
+                            },
+                            {
+                                "featureType": "all",
+                                "elementType": "labels.text.stroke",
+                                "stylers": {
+                                    "color": "#000000"
+                                }
+                            },
+                            {
+                                "featureType": "building",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#022338"
+                                }
+                            },
+                            {
+                                "featureType": "green",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#062032"
+                                }
+                            },
+                            {
+                                "featureType": "boundary",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#1e1c1c"
+                                }
+                            },
+                            {
+                                "featureType": "manmade",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#022338"
+                                }
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "all",
+                                "elementType": "labels.icon",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "all",
+                                "elementType": "labels.text.fill",
+                                "stylers": {
+                                    "color": "#2da0c6",
+                                    "visibility": "on"
+                                }
+                            }
+                        ]
+                    }
+                },
+                //series是在地图上的线条等效果的配置文件，具体可以查阅文档。
+                series: [{
+                    type: 'lines',
+                    coordinateSystem: 'bmap',
+                    zlevel: 2,
+                    effect: {
+                        show: true,
+                        period: 6,
+                        trailLength: 0,
+                        symbol: 'arrow',
+                        symbolSize: 10
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: "#a6c84c",
+                            width: 2,
+                            opacity: 0.6,
+                            curveness: 0.2
+                        }
+                    },
+                    //将手动做的一个迁徙数据放入线条的数据部分。
+                    data: linesdata
+                }]
+            };
+            //配置参数传入图形实例中
+            myChart.setOption(option);
+            //初始化bmap和echarts实例绑定
+            var bmap = myChart.getModel().getComponent('bmap').getBMap();
+            bmap.addControl(new BMap.MapTypeControl());
+        }
     }
 }
 </script>
+<style>
+.mainwindow{
+    height: 500px;
+    width: 500px;
+    background-color: #3dd17b;
+}
+</style>

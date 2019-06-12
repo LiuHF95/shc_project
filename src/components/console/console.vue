@@ -56,8 +56,10 @@
                         <ul class="tree-scroll device-scroll" v-if="showSearch==0">
                             <li class="device-scroll-item" v-for="(item,index) in group" :key="index">
                                 <div class="group-name-wrap over">
-                                    <input type="checkbox" class="check-box fl" 
-                                    @click="checkAll(item,index)"> 
+                                    <!-- @click="checkAll(item,index)" -->
+                                    <!-- <input type="checkbox" class="check-box fl" 
+                                        :checked="isTitleChecked(item)" 
+                                        @change="changeTitleChecked(item,$event)">  -->
                                     <span class="tran-img dis-b fl figer" 
                                         :class="{'tran-img-active':index==groupShow}" 
                                         @click="changeGroup(item,index)"></span>
@@ -74,15 +76,17 @@
                                 <ul class="group-wrap-hide bor-r4" :class="{'group-wrap-active':index==groupShow}">
                                     <li class="group-item bg-f bor-r4" v-for="(val,list) in item.list" :key="list">
                                         <div class="group-item-device over">
+                                                <!-- v-model="item.selected" -->
                                             <input type="checkbox" class="check-box device-check-box fl"
-                                                :value="val.terminalid" @click="checkOne()">
+                                                :value="val.terminalid" 
+                                                @click="checkOne()">
                                             <div class="device-img-wrap fl"></div>
                                             <div class="device-info-wrap fl fs-12">
                                                 <div class="device-info-top over w100">
                                                     <div class="device-name fl">{{val.name}}</div>
                                                     <div class="offline-time fr">离线时间>8天</div>
                                                 </div>
-                                                <div class="device-info">设备信息</div>
+                                                <div class="device-info">信号强度：&nbsp;电量：</div>
                                             </div>
                                         </div>
                                         <div class="group-item-nav text-c fs-12">
@@ -192,9 +196,8 @@
                 groupId:"",
                 groupNameArry:[],
                 deviceArry:[],
-                // idStr:"",
                 // 多选和全选
-                isAll:-1,
+                // isAll:-1,
                 // mask部分
                 maskShow:false,
                 toGroupShow:false,
@@ -209,9 +212,11 @@
             getGroupList () {
                 this.$http.post(this.$store.state.shcPost+'/rstl/Group/selectAllGroup.do',{})
                 .then(res => {
-                    if(res.status == 200) {
+                    // console.log(res.data[0].name)
+                    // console.log(res.status)
+                    // if(res.status == 200) {
                         this.group=res.data
-                    }
+                    // }
                 })
             },
             // 全部分组
@@ -227,9 +232,9 @@
                     this.$http.post(this.$store.state.shcPost+'/rstl/EquipmentController/selectGroupByIdOrName.do'
                     +"?name="+this.search,{})
                         .then(res => {
-                            if(res.status == 200) {
+                            // if(res.status == 200) {
                                 this.searchGroup=res.data
-                            }
+                            // }
                     })
                 } 
             },
@@ -249,16 +254,16 @@
                     }else{
                         this.$http.post(this.$store.state.shcPost+'/rstl/Group/addGroup.do'+"?name="+e.value,{})
                         .then(res => {
-                            console.log(res)
-                            if(res.status == 200) {
-                                this.getGroupList()
+                            // console.log(res)
+                            // if(res.status == 200) {
+                               this.getGroupList()
                                 this.$message({
-                                    type: 'success',
-                                    message: "添加成功",
-                                    center: true,
-                                    duration:1000
+                                type: 'success',
+                                message: "添加成功",
+                                center: true,
+                                duration:1000
                                 });
-                            }
+                            // }
                         })
                     }
                 }).catch(() => {
@@ -302,8 +307,8 @@
                         }else{
                             this.$http.post(this.$store.state.shcPost+'/rstl/Group/updateGroup.do'+"?id="+val.id+"&name="+e.value,{})
                             .then(res => {
-                                console.log(res)
-                                if(res.status == 200) {
+                                // console.log(res)
+                                // if(res.status == 200) {
                                     this.getGroupList()
                                     this.$message({
                                         type: 'success',
@@ -311,7 +316,7 @@
                                         center: true,
                                         duration:1000
                                     });
-                                }
+                                // }
                             })
                         }
                     }).catch(() => {});
@@ -319,7 +324,6 @@
             },
             // 删除分组
             deleteGroup(e){
-                console.log(e)
                 if(e.name=="默认组"){
                     this.$message({
                         message: "默认组不能删除",
@@ -332,8 +336,7 @@
                         // id:e.id
                     })
                         .then(res => {
-                            if(res.status == 200) {
-                                console.log(res)
+                            // if(res.status == 200) {
                                 this.getGroupList()
                                 this.$message({
                                     message: "删除成功",
@@ -341,7 +344,7 @@
                                     center: true,
                                     duration:1000
                                 });
-                            }
+                            // }
                         })
                 }else{
                     this.$message({
@@ -370,26 +373,30 @@
                 }
             },
             // 移动到组
+            groupnames(){
+                this.$http.post(this.$store.state.shcPost+'/rstl/Group/selectAllGroupNoEqui.do',{})
+                .then(res => {
+                    // if(res.status == 200) {
+                        this.groupNameArry=res.data
+                        // console.log(this.groupNameArry)
+                    // }
+                })
+            },
             moveTo(val){
                 this.maskShow=true
                 this.toGroupShow=true
                 this.groupId=val.id
-                this.$http.post(this.$store.state.shcPost+'/rstl/Group/selectAllGroupNoEqui.do',{})
-                .then(res => {
-                    if(res.status == 200) {
-                        this.groupNameArry=res.data
-                    }
-                })
+                this.groupnames()
             },
             toGroup(val){
                 this.$http.post(this.$store.state.shcPost+'/rstl/EquipmentController/moveGroupById.do'
                 +"?id="+this.groupId+"&grouping="+val.id,{})
                 .then(res => {
-                    if(res.status == 200) {
+                    // if(res.status == 200) {
                         this.maskShow=false
                         this.toGroupShow=false
                         this.getGroupList()
-                    }
+                    // }
                 })
             },
             close(){
@@ -397,30 +404,29 @@
                 this.toGroupShow=false
             },
             // 全选，全不选，单选
-            checkAll(val,e){
-                if(this.isAll==e){
-                    this.isAll=-1
-                    this.BaiduMap()
-                }else{
-                    this.isAll=e
-                    if(val.list.length!=0){
-                        var ids=val.list[0].terminalid
-                        for(var i=1;i<val.list.length;i++){
-                            ids=ids+","+val.list[i].terminalid
-                        }
-                        this.$http.post(this.$store.state.shcPost+'/rstl/Location/selectGpsByIds.do'+"?ids="+ids,{})
-                        .then(res => {
-                            if(res.status == 200) {
-                                this.deviceArry=res.data
-                                this.all()
-                            }
-                        })
-                    }
-                }
-            },
+            // checkAll(val,e){
+            //     if(this.isAll==e){
+            //         this.isAll=-1
+            //         this.BaiduMap()
+            //     }else{
+            //         this.isAll=e
+            //         if(val.list.length!=0){
+            //             var ids=val.list[0].terminalid
+            //             for(var i=1;i<val.list.length;i++){
+            //                 ids=ids+","+val.list[i].terminalid
+            //             }
+            //             this.$http.post(this.$store.state.shcPost+'/rstl/Location/selectGpsByIds.do'+"?ids="+ids,{})
+            //             .then(res => {
+            //                 if(res.status == 200) {
+            //                     this.deviceArry=res.data
+            //                     this.all()
+            //                 }
+            //             })
+            //         }
+            //     }
+            // },
             checkOne(){
                 var checkBoxes=document.getElementsByClassName("device-check-box")
-                // this.idStr=""
                 var ids=""
                 for(var i=0;i<checkBoxes.length;i++){
                     if(checkBoxes[i].checked){
@@ -428,29 +434,45 @@
                     }
                 }
                 ids=ids.substr(1,ids.length)
-                // if(this.idStr==""){
-                //     this.idStr=e.terminalid
-                // }else{
-                //     this.idStr=this.idStr+","+e.terminalid
-                // }
                 if(ids.length!=0){
                     this.$http.post(this.$store.state.shcPost+'/rstl/Location/selectGpsByIds.do'+"?ids="+ids,{})
                         .then(res => {
-                            if(res.status == 200) {
+                            // if(res.status == 200) {
                                 this.deviceArry=res.data
                                 if(res.data.length!=0){
                                     this.all()
                                 }
-                            }
+                            // }
                         })
                 }else{
                     this.BaiduMap()
                 }
             },
+            // 当父标题状态变化时的处理方法
+            // changeTitleChecked(data,event) {
+            //     // console.log(data)
+            //     if (event.target.checked === true) {
+            //         data.list.forEach(function (item) {
+            //             data.selected.indexOf(item.terminalid) === -1 && data.selected.push(item.terminalid);
+            //         })
+            //         this.checkOne()
+            //     }else {
+            //         data.selected = [];
+            //     }
+            // },
+            // 判断父标题选择状态
+            // isTitleChecked(data) {
+            //     var _selected = data.selected;
+            //     var _listItem = data.list;
+            //     // 验证selected中是否含有全部的item的id 如果是 证明title要选中
+            //     return _listItem.every(function (item) {
+            //         return _selected.indexOf(item.terminalid) != -1;
+            //     });
+            // },
             // 轨迹
             guiji(e){
                 this.$store.state.terminalid=e.terminalid
-                this.$router.push({path:"/locus"})
+                // this.$router.push({path:"/locus"})
             },            
             // 创建地图
             all(){
@@ -482,8 +504,8 @@
                 //设置icon信息
                 var width = 32;
                 var height = 32;
-                var imgSrc = "../../../static/images/marker.png"; //引入icon图片
-                // var imgSrc = "/rstl/static/images/marker.png"; //引入icon图片
+                // var imgSrc = "../../../static/images/marker.png"; //引入icon图片
+                var imgSrc = "/rstl/static/images/marker.png"; //引入icon图片
                 var myIcon = new BMap.Icon(imgSrc, new BMap.Size(width,height));//配置icon
                 for(var i = 0; i < markerArr.length; i++){//遍历
                     point[i] = new window.BMap.Point(markerArr[i].longitude,markerArr[i].latitude);
@@ -792,13 +814,16 @@
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    background: gray;
+    /* background: gray; */
     margin-right: 10px;
+    background: gray url("../../../static/images/car.png") no-repeat center center;
+    background-size:20px 20px;
 }
 .device-info-wrap{
     height: 32px;
     position: relative;
-    width: 168px;
+    /* width: 168px; */
+    width:158px;
 }
 .device-info{
     position: absolute;
