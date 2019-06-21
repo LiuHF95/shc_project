@@ -1,224 +1,126 @@
 <template>
     <div>
-        <div id="map" class="mainwindow"></div>
+        <span class="figer" @click="dynamicLine">播放</span>
+        <span class="figer" @click="zanting">暂停</span>
+        <span class="figer" @click="reset">重置</span>
+        <div v-for="(item,index) in speed" :key="index" @click="changeSpeed(index)">{{item}}</div>
+        <div id="mymap"></div>
     </div>
 </template>
 <script>
-import echarts from "echarts";
-import BMap from 'BMap'
+import BMap from "BMap"
+import BMapLib from "BMapLib"
 export default{
     data(){
         return{
+            arrPoints:[
+                {lat:22.54608, lng:113.96062}, 
+                {lat:22.54402, lng:113.95819},
+                {lat:22.54608, lng:113.96062}, 
+                {lat:22.54624, lng:113.95852},
+                {lat:22.54824, lng:113.95952},
+                {lat:22.54224, lng:113.95552},
+            ],
+            i:0,
+            points:[],
+            time:500,
+            speed:[1,1.5,2]
         }
     },
     mounted(){
-        this.aaa()
+        this.intMap()
     },
     methods:{
-        aaa(){
-            let chartMap = document.getElementById('map');
-            let myChart = echarts.init(chartMap);
-            //手工写入的一个迁徙线的数据，正常项目中应该是由AJAX或其他方式来获取数据。
-            var linesdata = [{
-                fromName: "银泰",
-                toName: "路口",
-                coords: [
-                    [120.114271,30.305938],
-                    [120.118951,30.309134]
-                ]
-            }];
-            //echarts中使用地图的配置参数
-            var option = {
-                bmap: {
-                    // 百度地图中心经纬度 坐标拾取器http://api.map.baidu.com/lbsapi/getpoint/index.html
-                    center: [120.114271,30.305938],
-                    // 百度地图缩放等级，数字越大，放大越大，地图比例尺越小
-                    zoom: 16,
-                    // 是否开启拖拽缩放，可以只设置 'scale' 或者 'move'
-                    roam: false,
-                    // mapStyle是百度地图的自定义样式，见 http://developer.baidu.com/map/custom/
-                    mapStyle: {
-                        styleJson: [{
-                                "featureType": "water",
-                                "elementType": "all",
-                                "stylers": {
-                                    "color": "#021019"
-                                }
-                            },
-                            {
-                                "featureType": "highway",
-                                "elementType": "geometry.fill",
-                                "stylers": {
-                                    "color": "#000000"
-                                }
-                            },
-                            {
-                                "featureType": "highway",
-                                "elementType": "geometry.stroke",
-                                "stylers": {
-                                    "color": "#147a92"
-                                }
-                            },
-                            {
-                                "featureType": "arterial",
-                                "elementType": "geometry.fill",
-                                "stylers": {
-                                    "color": "#000000"
-                                }
-                            },
-                            {
-                                "featureType": "arterial",
-                                "elementType": "geometry.stroke",
-                                "stylers": {
-                                    "color": "#0b3d51"
-                                }
-                            },
-                            {
-                                "featureType": "local",
-                                "elementType": "geometry",
-                                "stylers": {
-                                    "color": "#000000"
-                                }
-                            },
-                            {
-                                "featureType": "land",
-                                "elementType": "all",
-                                "stylers": {
-                                    "color": "#08304b"
-                                }
-                            },
-                            {
-                                "featureType": "railway",
-                                "elementType": "geometry.fill",
-                                "stylers": {
-                                    "color": "#000000"
-                                }
-                            },
-                            {
-                                "featureType": "railway",
-                                "elementType": "geometry.stroke",
-                                "stylers": {
-                                    "color": "#08304b"
-                                }
-                            },
-                            {
-                                "featureType": "subway",
-                                "elementType": "geometry",
-                                "stylers": {
-                                    "lightness": -70
-                                }
-                            },
-                            {
-                                "featureType": "building",
-                                "elementType": "geometry.fill",
-                                "stylers": {
-                                    "color": "#000000"
-                                }
-                            },
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.text.fill",
-                                "stylers": {
-                                    "color": "#857f7f"
-                                }
-                            },
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.text.stroke",
-                                "stylers": {
-                                    "color": "#000000"
-                                }
-                            },
-                            {
-                                "featureType": "building",
-                                "elementType": "geometry",
-                                "stylers": {
-                                    "color": "#022338"
-                                }
-                            },
-                            {
-                                "featureType": "green",
-                                "elementType": "geometry",
-                                "stylers": {
-                                    "color": "#062032"
-                                }
-                            },
-                            {
-                                "featureType": "boundary",
-                                "elementType": "all",
-                                "stylers": {
-                                    "color": "#1e1c1c"
-                                }
-                            },
-                            {
-                                "featureType": "manmade",
-                                "elementType": "geometry",
-                                "stylers": {
-                                    "color": "#022338"
-                                }
-                            },
-                            {
-                                "featureType": "poi",
-                                "elementType": "all",
-                                "stylers": {
-                                    "visibility": "off"
-                                }
-                            },
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.icon",
-                                "stylers": {
-                                    "visibility": "off"
-                                }
-                            },
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.text.fill",
-                                "stylers": {
-                                    "color": "#2da0c6",
-                                    "visibility": "on"
-                                }
-                            }
-                        ]
-                    }
-                },
-                //series是在地图上的线条等效果的配置文件，具体可以查阅文档。
-                series: [{
-                    type: 'lines',
-                    coordinateSystem: 'bmap',
-                    zlevel: 2,
-                    effect: {
-                        show: true,
-                        period: 6,
-                        trailLength: 0,
-                        symbol: 'arrow',
-                        symbolSize: 10
-                    },
-                    lineStyle: {
-                        normal: {
-                            color: "#a6c84c",
-                            width: 2,
-                            opacity: 0.6,
-                            curveness: 0.2
-                        }
-                    },
-                    //将手动做的一个迁徙数据放入线条的数据部分。
-                    data: linesdata
-                }]
-            };
-            //配置参数传入图形实例中
-            myChart.setOption(option);
-            //初始化bmap和echarts实例绑定
-            var bmap = myChart.getModel().getComponent('bmap').getBMap();
-            bmap.addControl(new BMap.MapTypeControl());
-        }
+        intMap(){
+            // 初始化
+            var map = new BMap.Map("mymap"); // 创建Map实例
+            map.centerAndZoom(new BMap.Point(113.953162, 22.532701), 16); // 初始化地图,设置中心点坐标和地图级别
+            map.addControl(new BMap.MapTypeControl({
+                mapTypes:[
+                    BMAP_NORMAL_MAP,
+                    BMAP_SATELLITE_MAP,
+                    BMAP_HYBRID_MAP
+                ]})); 
+            map.setCurrentCity("高新园"); // 设置地图中心显示的城市 new！
+            map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+            map.addControl(new BMap.NavigationControl()); //缩放按钮
+            window.map = map;//将map变量存储在全局
+        },
+        //画折线
+        driveline(points){
+            console.log(points)
+            // map.addOverlay(new BMap.Polyline(points, {
+            //     strokeColor: "lightgreen",
+            //     strokeWeight: 2,
+            //     strokeOpacity: 1,
+            // }));
+            map.addOverlay(new BMapLib.CurveLine(points, {
+                strokeColor: "red",
+                strokeWeight: 2,
+                strokeOpacity: 1,
+            }))
+        },
+        //根据点信息实时更新地图显示范围，让轨迹完整显示。设置新的中心点和显示级别
+        setZoom(bPoints){
+            var view = map.getViewport(eval(bPoints));
+            var centerPoint = view.center;
+            map.centerAndZoom(centerPoint, 16);
+        },
+        //执行方法
+        dynamicLine(){
+            if (this.arrPoints.length==this.i){
+                this.$message({
+                    type: 'success',
+                    message: '轨迹回放播放完成',
+                    center: true,
+                    duration:2500
+                }); 
+            }
+            if (this.arrPoints.length==this.i) return;
+            var lat=this.arrPoints[this.i].lat
+            var lng=this.arrPoints[this.i].lng
+            var mpiont=new BMap.Point(lng,lat)
+            this.points.push(mpiont);
+            var mkr = new BMap.Marker(this.points[this.i]);
+            map.addOverlay(mkr); //标点  
+            var label = new BMap.Label(this.arrPoints[this.i].lat, {
+                offset: new BMap.Size(20, -10)
+            });
+            mkr.setLabel(label);
+            this.setZoom(this.points);
+            this.driveline(this.points);
+            this.i++;
+            var a=setTimeout(()=>{
+                this.dynamicLine()
+            },this.time);
+            window.a = a;//将map变量存储在全局
+        },
+        zanting(){
+            console.log(1)
+            clearTimeout(a)
+        },
+        reset(){
+            this.points=[]
+            this.i=0
+            this.intMap()
+            this.dynamicLine()
+        },
+        changeSpeed(e){
+            console.log(e)
+            if(e==0){
+                this.time=2500
+            }else if(e==1){
+                this.time=1500
+            }else{
+                this.time=500
+            }
+        },
     }
 }
 </script>
-<style>
-.mainwindow{
-    height: 500px;
-    width: 500px;
-    background-color: #3dd17b;
-}
+<style scoped>
+    #mymap{
+        width: 100%;
+        height: 400px;
+    }
 </style>

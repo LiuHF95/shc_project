@@ -115,3 +115,11 @@ textarea{
 .font-w{
     font-weight: bold;
 }
+/* 相对定位 */
+.pos-r{
+    position: relative;
+}
+/* 绝对定位 */
+.pos-a{
+    position: absolute;
+}

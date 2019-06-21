@@ -73,7 +73,8 @@
                                         <span class="delete color-r figer" @click="deleteGroup(item)">删除</span>
                                     </div>
                                 </div>
-                                <ul class="group-wrap-hide bor-r4" :class="{'group-wrap-active':index==groupShow}">
+                                <!-- <ul class="group-wrap-hide bor-r4" :class="{'group-wrap-active':index==groupShow}"> -->
+                                <ul class="group-wrap-active bor-r4" v-show="index==groupShow">
                                     <li class="group-item bg-f bor-r4" v-for="(val,list) in item.list" :key="list">
                                         <div class="group-item-device over">
                                                 <!-- v-model="item.selected" -->
@@ -212,11 +213,7 @@
             getGroupList () {
                 this.$http.post(this.$store.state.shcPost+'/rstl/Group/selectAllGroup.do',{})
                 .then(res => {
-                    // console.log(res.data[0].name)
-                    // console.log(res.status)
-                    // if(res.status == 200) {
-                        this.group=res.data
-                    // }
+                    this.group=res.data
                 })
             },
             // 全部分组
@@ -231,10 +228,8 @@
                     this.showSearch=1
                     this.$http.post(this.$store.state.shcPost+'/rstl/EquipmentController/selectGroupByIdOrName.do'
                     +"?name="+this.search,{})
-                        .then(res => {
-                            // if(res.status == 200) {
-                                this.searchGroup=res.data
-                            // }
+                    .then(res => {
+                        this.searchGroup=res.data
                     })
                 } 
             },
@@ -254,16 +249,13 @@
                     }else{
                         this.$http.post(this.$store.state.shcPost+'/rstl/Group/addGroup.do'+"?name="+e.value,{})
                         .then(res => {
-                            // console.log(res)
-                            // if(res.status == 200) {
-                               this.getGroupList()
-                                this.$message({
+                            this.getGroupList()
+                            this.$message({
                                 type: 'success',
                                 message: "添加成功",
                                 center: true,
                                 duration:1000
-                                });
-                            // }
+                            });
                         })
                     }
                 }).catch(() => {
@@ -307,16 +299,13 @@
                         }else{
                             this.$http.post(this.$store.state.shcPost+'/rstl/Group/updateGroup.do'+"?id="+val.id+"&name="+e.value,{})
                             .then(res => {
-                                // console.log(res)
-                                // if(res.status == 200) {
-                                    this.getGroupList()
-                                    this.$message({
-                                        type: 'success',
-                                        message: "修改成功",
-                                        center: true,
-                                        duration:1000
-                                    });
-                                // }
+                                this.getGroupList()
+                                this.$message({
+                                    type: 'success',
+                                    message: "修改成功",
+                                    center: true,
+                                    duration:1000
+                                });
                             })
                         }
                     }).catch(() => {});
@@ -335,17 +324,15 @@
                     this.$http.post(this.$store.state.shcPost+'/rstl/Group/deleteGroup.do'+"?id="+e.id,{
                         // id:e.id
                     })
-                        .then(res => {
-                            // if(res.status == 200) {
-                                this.getGroupList()
-                                this.$message({
-                                    message: "删除成功",
-                                    type:"success",
-                                    center: true,
-                                    duration:1000
-                                });
-                            // }
-                        })
+                    .then(res => {
+                        this.getGroupList()
+                        this.$message({
+                            message: "删除成功",
+                            type:"success",
+                            center: true,
+                            duration:1000
+                        });
+                    })
                 }else{
                     this.$message({
                         message: "分组内容不为空，不能删除分组",
@@ -376,10 +363,7 @@
             groupnames(){
                 this.$http.post(this.$store.state.shcPost+'/rstl/Group/selectAllGroupNoEqui.do',{})
                 .then(res => {
-                    // if(res.status == 200) {
-                        this.groupNameArry=res.data
-                        // console.log(this.groupNameArry)
-                    // }
+                    this.groupNameArry=res.data
                 })
             },
             moveTo(val){
@@ -392,11 +376,9 @@
                 this.$http.post(this.$store.state.shcPost+'/rstl/EquipmentController/moveGroupById.do'
                 +"?id="+this.groupId+"&grouping="+val.id,{})
                 .then(res => {
-                    // if(res.status == 200) {
-                        this.maskShow=false
-                        this.toGroupShow=false
-                        this.getGroupList()
-                    // }
+                    this.maskShow=false
+                    this.toGroupShow=false
+                    this.getGroupList()
                 })
             },
             close(){
@@ -436,14 +418,12 @@
                 ids=ids.substr(1,ids.length)
                 if(ids.length!=0){
                     this.$http.post(this.$store.state.shcPost+'/rstl/Location/selectGpsByIds.do'+"?ids="+ids,{})
-                        .then(res => {
-                            // if(res.status == 200) {
-                                this.deviceArry=res.data
-                                if(res.data.length!=0){
-                                    this.all()
-                                }
-                            // }
-                        })
+                    .then(res => {
+                        this.deviceArry=res.data
+                        if(res.data.length!=0){
+                            this.all()
+                        }
+                    })
                 }else{
                     this.BaiduMap()
                 }
@@ -471,8 +451,10 @@
             // },
             // 轨迹
             guiji(e){
+                console.log(e)
                 this.$store.state.terminalid=e.terminalid
-                // this.$router.push({path:"/locus"})
+                this.$store.state.deviceName=e.name
+                this.$router.push({path:"/locus"})
             },            
             // 创建地图
             all(){
@@ -787,11 +769,11 @@
     height:auto;
     background: rgba(213, 220, 237);
 }
-.group-wrap-hide{
+/* .group-wrap-hide{
     height: 0;
     padding: 0;
     overflow: hidden;
-}
+} */
 .search-device-list{
     padding: 8px;
     height:auto;

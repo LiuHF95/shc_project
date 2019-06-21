@@ -5,7 +5,8 @@ let shcPost = window.sessionStorage.getItem('domain')
 const store = new Vuex.Store({
     state: {
         shcPost: shcPost,
-        terminalid:""
+        terminalid:"",
+        deviceName:""
     },
 })
 Vue.use(store)
