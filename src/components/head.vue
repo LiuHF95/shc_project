@@ -25,8 +25,8 @@
         <div class="nav-right-wrap">
           <div class="user-time">您好，<span class="user-name">{{username}}</span></div>
           <div class="system-tools">
-            <span class="tools-list">消息中心(<span class="no-num">{{noNum}}</span>未读)</span>
-            <span class="tools-list setting">设置
+            <!-- <span class="tools-list">消息中心(<span class="no-num">{{noNum}}</span>未读)</span> -->
+            <!-- <span class="tools-list setting">设置
               <div class="set-box">
                 <ul class="set">
                   <li class="set-list">默认首页</li>
@@ -35,8 +35,8 @@
                   <li class="set-list">指令管理</li>
                 </ul>
               </div>
-            </span>
-            <span class="tools-list">关于</span>
+            </span> -->
+            <!-- <span class="tools-list">关于</span> -->
             <span class="tools-list user-center">个人中心
               <div class="set-box">
                   <ul class="set">
@@ -61,12 +61,9 @@ export default {
       username: '豪斯石油',
       noNum:1,
       navList:[
-        {listname:"工作台",route:"/"},
+        {listname:"控制台",route:"/"},
         {listname:"设备管理",route:"/devicemanage"},
-        {listname:"用户管理",route:"/usermanage"},
-        {listname:"控制台",route:"/console"},
         {listname:"统计报表",route:"/report"},
-        {listname:"安全区域",route:"/safearea"},
         {listname:"设备分布",route:"/distributed"},
       ]
     }
@@ -86,7 +83,7 @@ export default {
   height:60px;
   background:#0087d6;
   position: fixed;
-  margin-bottom:20px;
+  /* margin-bottom:20px; */
   box-shadow: 0 2px 3px rgba(0,0,0,.1);
   z-index: 1000;
 }
@@ -220,4 +217,6 @@ export default {
   padding: 6px 8px;
   text-align: center;
 }
+
+
 </style>

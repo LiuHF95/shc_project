@@ -7,9 +7,7 @@
 }
 body,html{
     background:#F2F2F2;
-    /* min-width: 1280px; */
     height:100%;
-    min-height:460px;
 }
 /* 宽100% */
 .w100{
@@ -18,6 +16,9 @@ body,html{
 /* 高100% */
 .h100{
     height: 100%;
+}
+.hvh{
+    height: 100vh;
 }
 /* 去除图片默认边距 */
 img{
@@ -75,6 +76,9 @@ textarea{
 /* 鼠标滑过指针变手指 */
 .figer{
     cursor: pointer;
+}
+.ft-w {
+    font-weight: bold;
 }
 /* 超出部分隐藏 */
 .over{

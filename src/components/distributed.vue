@@ -1,7 +1,7 @@
 <template>
     <div class="box">
-        <home-head :tab-bar="6"></home-head>
-        <div class="main">
+        <home-head :tab-bar="3"></home-head>
+        <div class="main hvh">
             <div class="distributed-head">
                 <div class="title fl">设备分布图</div>
                 <ul class="fr over fs-16">
@@ -11,8 +11,7 @@
                     <li class="title-list fl">未激活：<span class="color-r">0</span>台</li>
                 </ul>
             </div>
-            <div class="map-wrap bg-f">
-                <div id="map" class="map"></div>
+            <div class="map-wrap" id="all-map">
             </div>
         </div>
     </div>
@@ -20,8 +19,7 @@
 
 <script>
 import HomeHead from "./head"
-import echarts from "echarts";
-import '../../node_modules/echarts/map/js/china.js' // 引入中国地图数据
+import BMap from 'BMap'
 export default {
     components: {
         HomeHead
@@ -31,67 +29,24 @@ export default {
         };
     },
     mounted() {
-        this.chinaConfigure();
+        this.BaiduMap()
     },
     methods: {
-        chinaConfigure() {
-            let chartMap = document.getElementById('map');
-            let myChart = echarts.init(chartMap);
-            myChart.setOption({
-                roam: false,
-                backgroundColor: "#fff",
-                tooltip: {}, // 鼠标移到图里面的浮动提示框
-                dataRange: {
-                    show: true,
-                    min: 0,
-                    max: 200,
-                    text: ['高', '低'],
-                    realtime: true,
-                    calculable: true,
-                    color: ['#FF0000', '#FFFF00']
-                },
-                series: [
-                    {
-                        name: '设备分布',
-                        type: 'map',
-                        map: 'china',
-                        mapType: '中国',
-                        roam: false,
-                        zoom: 1.2,
-                        itemStyle:{
-                            normal:{
-                                areaColor: '#ccc',
-                                borderColor: '#D8D8D8',
-                                label:{
-                                    show:true,
-                                    textStyle: {
-                                        color: '#8B4513',
-                                    }
-                                },
-                            },
-                        },
-                        data: [
-                            {
-                                "name": "北京",
-                                "value": 1
-                            },{
-                                "name": "山东",
-                                "value": 1
-                            }
-                        ]
-                    }
-                ]
-            })
-        }
+        BaiduMap(){
+            var map = new BMap.Map("all-map");    // 创建Map实例
+            map.centerAndZoom(new BMap.Point(116.46,39.92),6);  // 初始化地图,设置中心点坐标和地图级别
+            map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+            map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+            // map.addControl(new BMap.OverviewMapControl());              //添加缩略地图控件
+            map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+            map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+            window.map = map;//将map变量存储在全局
+        },
     }
 }
 </script>
 
 <style scoped>
-.main{
-    height: 100vh;
-    min-height: 500px;
-}
 .distributed-head{
     background-color: aliceblue;
     background-image: linear-gradient(#F1F5FD, #E9F0FF);
@@ -114,12 +69,7 @@ export default {
     margin-right: 0;
 }
 .map-wrap{
-    padding: 20px;
-    width: 100%;
     height: calc(100% - 47px);
-}
-.map{
-    width:100%;
-    height:100%;
+    background: yellow;
 }
 </style>

@@ -6,6 +6,7 @@ import router from './router'
 import Vuex from 'vuex'
 import store from './store'
 import axios from 'axios'
+import qs from 'qs'
 import "./assets/reset.css" //引入公共样式
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -17,6 +18,8 @@ Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 
 Vue.prototype.$http = axios
+
+Vue.prototype.$qs = qs
 
 Vue.use(ElementUI)
 

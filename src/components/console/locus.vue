@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="locus-main">
+        <div class="locus-main hvh">
             <div class="locus-head fs-12 w100 bg-f pos-r">
                 <div class="head-top fs-12 pos-r">
                     <span class="font-w">轨迹回放</span>
@@ -98,6 +98,7 @@ export default{
                     +"&endDate="+this.end
                     +"&terminalid="+this.terminalid,{})
                 .then(res => {
+                    console.log(res.data)
                     if(res.data.length!=0){
                         this.arrPoints=res.data
                         this.replay()
@@ -228,9 +229,6 @@ export default{
 }
 </script>
 <style scoped>
-.locus-main{
-    height:100vh;
-}
 .head-top{
     height: 40px;
     background-image: linear-gradient(#F1F5FD, #E9F0FF);

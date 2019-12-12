@@ -1,21 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/index'
-import Devicemanage from '@/components/devicemanage'
-import Usermanage from '@/components/usermanage'
-import Console from '@/components/console/console'
-import Locus from '@/components/console/locus'
-import Report from '@/components/report'
-import Safearea from '@/components/safearea'
-import Distributed from '@/components/distributed'
+import Console from '@/components/console/console'//控制台
+import Locus from '@/components/console/locus'//轨迹
+
+import Devicemanage from '@/components/devicemanage'//设备管理
+
+import Report from '@/components/reportform/report'//统计报表
+// import Reportoverview from '@/components/reportform/alert/alertoverview'//告警总览
+
+import Distributed from '@/components/distributed'//设备分布
 import Hihi from '@/components/hihi'
 import A from '@/components/aaa'
 
 Vue.use(Router)
 
 export default new Router({
-  // mode:"history",
-  // base:"/rstl/",
   routes: [
     {
       path: '/a',
@@ -27,27 +26,9 @@ export default new Router({
       name: 'Hihi',
       component: Hihi
     },
-    // 首页
-    {
-      path: '/',
-      name: 'Index',
-      component: Index
-    },
-    // 设备管理
-    {
-      path: '/devicemanage',
-      name: 'Devicemanage',
-      component: Devicemanage
-    },
-    // 用户管理
-    {
-      path: '/usermanage',
-      name: 'Usermanage',
-      component: Usermanage
-    },
     // 控制台
     {
-      path: '/console',
+      path: '/',
       name: 'Console',
       component: Console
     },
@@ -57,17 +38,17 @@ export default new Router({
       name: 'Locus',
       component: Locus
     },
+    // 设备管理
+    {
+      path: '/devicemanage',
+      name: 'Devicemanage',
+      component: Devicemanage
+    },
     // 统计报表
     {
       path: '/report',
       name: 'Report',
       component: Report
-    },
-    // 安全区域
-    {
-      path: '/safearea',
-      name: 'Safearea',
-      component: Safearea
     },
     // 设备分布
     {

@@ -28,5 +28,6 @@ export default {
     color: #2c3e50;
     font-size: 14px;
     height: 100%;
+    background: #fff;
 }
 </style>

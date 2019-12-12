@@ -1,9 +1,9 @@
 <template>
 <div class="console-main">
     <!-- 头部 -->
-    <home-head :tab-bar="3"></home-head>
+    <home-head :tab-bar="0"></home-head>
     <!-- 主体部分 -->
-    <div class="map-wrap h100">
+    <div class="map-wrap h100 hvh">
         <!-- 地图左边部分 -->
         <div class="map-left fl over h100">
             <!-- 地图左边用户部分 -->
@@ -532,7 +532,6 @@
 <style scoped>
 .map-wrap{
     padding-top:60px;
-    height:100vh;
     min-height: 460px;
 }
 /* 地图左边部分  */
