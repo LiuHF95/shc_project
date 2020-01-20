@@ -91,10 +91,9 @@
                                             </div>
                                         </div>
                                         <div class="group-item-nav text-c fs-12">
-                                            <span class="item-nav-list fl figer">关注</span>
                                             <span class="item-nav-list fl figer" @click="guiji(val)">轨迹</span>
-                                            <span class="item-nav-list fl figer">指令</span>
-                                            <span class="item-nav-list fl figer">详情</span>
+                                            <!-- <span class="item-nav-list fl figer">指令</span>
+                                            <span class="item-nav-list fl figer">详情</span> -->
                                             <span class="item-nav-list fl figer" @click="moveTo(val)">移动</span>
                                         </div>
                                     </li>
@@ -451,7 +450,6 @@
             // },
             // 轨迹
             guiji(e){
-                console.log(e)
                 this.$store.state.terminalid=e.terminalid
                 this.$store.state.deviceName=e.name
                 this.$router.push({path:"/locus"})
@@ -486,7 +484,6 @@
                 //设置icon信息
                 var width = 32;
                 var height = 32;
-                // var imgSrc = "../../../static/images/marker.png"; //引入icon图片
                 var imgSrc = "/rstl/static/images/marker.png"; //引入icon图片
                 var myIcon = new BMap.Icon(imgSrc, new BMap.Size(width,height));//配置icon
                 for(var i = 0; i < markerArr.length; i++){//遍历
@@ -821,7 +818,8 @@
 }
 .item-nav-list{
     display: block;
-    width: 20%;
+    width: 50%;
+    /* width: 25%; */
     border-right: 1px solid #eee;
 }
 .item-nav-list:last-of-type{

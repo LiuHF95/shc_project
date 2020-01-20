@@ -1,6 +1,6 @@
 <template>
-    <div class="box">
-        <div class="alert-overview-wrap w100 fa-12">
+    <div class="box h100">
+        <div class="alert-overview-wrap h100 w100 fa-12" ref="wrap">
             <div class="alert-overview-top">
                 <div class="time-wrap">
                     <div class="dis-ib">
@@ -83,28 +83,36 @@
                     <span class="easy-btns dis-ib figer" 
                     v-for="(item,index) in easyBtns" :key="index"
                     @click="choseEasy(index)">{{item}}</span>
-                </div>
+                </div>  
+                <!-- :height="tableHeight" -->
                 <el-table :header-cell-style="rowClass" :data="tableData" border style="width: 100%">
                     <el-table-column type="selection" fixed width="35"></el-table-column>
                     <el-table-column prop="device_name" align="center" fixed label="设备名称" width="120"></el-table-column>
                     <el-table-column prop="terminalid" align="center" label="IMEI" width="140"></el-table-column>
                     <el-table-column prop="alarm" align="center" label="报警信息" width="240"></el-table-column>
+                    <el-table-column prop="alarm_time" align="center" label="报警时间" width="150"></el-table-column>
                     <el-table-column align="center" label="已读状态" width="80">
                         <template slot-scope="scope">
                             <span class="color-r" v-if="scope.row.read_type==0">未读</span>
                             <span v-if="scope.row.read_type==1">已读</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="location_time" align="center" label="定位时间" width="150"></el-table-column>
-                    <el-table-column prop="alarm_time" align="center" label="报警时间" width="150"></el-table-column>
                     <el-table-column align="center" label="处理状态" width="80">
                         <template slot-scope="scope">
                             <span class="color-r" v-if="scope.row.handle_type==0">未处理</span>
                             <span v-if="scope.row.handle_type==1">已处理</span>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="processing_contents" align="center" label="处理内容"></el-table-column>
+                    <el-table-column prop="handler" align="center" label="处理者"></el-table-column>
                     <el-table-column prop="processing_time" align="center" label="处理时间"></el-table-column>
                 </el-table>
+            </div>
+            <div class="page-btn-wrap text-c">
+                <span class=" dis-ib page-btns prvious color-f figer" @click="prvious">上一页</span>
+                <span class=" dis-ib page-btns page">{{page}}</span>
+                <span class=" dis-ib page-btns next color-f figer" @click="next">下一页</span>
+                <span class=" dis-ib page-btns total-page">共{{totalPage}}页</span>
             </div>
         </div>
         <div class="mask pos-a w100 hvh" v-show="showAlertType">
@@ -132,6 +140,7 @@
 export default{
     data(){
         return{
+            tableHeight:"",
             alertStartTime:"",//告警开始时间
             alertEndTime:"",//告警结束时间
             posStartTime:"",//定位开始时间
@@ -167,6 +176,7 @@ export default{
         }
     },
     mounted(){
+        // this.tableHeight=this.$refs.wrap.offsetHeight - 172
         this.getData()
     },
     methods:{
@@ -188,7 +198,7 @@ export default{
                 rows:10,												
             })).then((res)=>{
                 this.tableData=res.data.alarm
-                this.totalPage=res.data.total/10
+                this.totalPage=Math.ceil(res.data.total/10) 
             })
         },
         // 选择告警时间、定位时间及输入IMEI查询告警列表
@@ -306,6 +316,34 @@ export default{
                 }
             }
         },
+        // 上一页
+        prvious(){
+            if(this.page<=1){
+                this.$message({
+                    type: 'warning',
+                    message: '已经是第一页了',
+                    center: true,
+                    duration:1000
+                })
+            }else{
+                this.page-=1
+                this.getData()
+            }
+        },
+        // 下一页
+        next(){
+            if(this.page>=this.totalPage){
+                this.$message({
+                    type: 'warning',
+                    message: '已经是最后一页了',
+                    center: true,
+                    duration:1000
+                })
+            }else{
+                this.page+=1
+                this.getData()
+            }
+        },
         // 选择快捷键
         choseEasy(e){
             if(e==4){
@@ -380,7 +418,7 @@ export default{
                     this.showAlertType=false
                 }
             })
-        }
+        },
     }
 }
 </script>
@@ -396,10 +434,9 @@ export default{
     margin-left: 10px;
 }
 .search,.search-wrap{
-    border: 1px solid #ddd;
     border-radius: 4px;
 }
-.search-input,.search-btn{
+.search-input,.search-btn,.page-btns{
     line-height: 28px;
 }
 .search-input{
@@ -408,8 +445,6 @@ export default{
 }
 .search-btn{
     padding: 0 15px;
-    background: #42aeed;
-    border-color: #42aeed;
 }
 .search-wrap,.device-wrap{
     width: 288px;
@@ -426,7 +461,6 @@ export default{
     height: 240px;
     left: 0;
     top: 31px;
-    border: 1px solid #ddd; 
     border-radius: 4px;
     background: #fff;
     z-index: 10;
@@ -464,12 +498,23 @@ export default{
 }
 .search-btm-btn{
     line-height: 20px;
-    border: 1px solid #ddd;
     padding: 0 10px;
 }
-.confirm-btn{
+.page-btns,.device-wrap,.search,.search-wrap,.search-btm-btn{
+    border: 1px solid #ddd;
+}
+.confirm-btn,.prvious,.next,.search-btn{
     background: #42aeed;
     border-color: #42aeed;
+}
+.page-btn-wrap{
+    margin-top: 10px;
+}
+.total-page{
+    border: 0;
+}
+.prvious,.next,.page{
+    padding: 0 10px;
 }
 
 /* 快捷键 */

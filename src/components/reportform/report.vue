@@ -19,10 +19,12 @@
                 <div class="menu-top w100">统计报表</div>
                 <div class="report-main-wrap bg-f">
                     <alert-btn class="alert-icon"></alert-btn>
+                    <!-- 运动总览 -->
+                    <sport-overview></sport-overview>
                     <!-- 告警总览 -->
                     <!-- <alert-overview></alert-overview> -->
                     <!-- 告警详情 -->
-                    <alert-details></alert-details>
+                    <!-- <alert-details></alert-details> -->
                 </div>
             </div>
         </div>
@@ -30,15 +32,17 @@
 </template>
 <script>
 import HomeHead from "../head"//头部
+import SportOverview from "./alert/sportsoverview"//运动总览
 import AlertOverview from "./alert/alertoverview"//告警总览
 import AlertDetails from "./alert/alertdetails"//告警总览
-import AlertBtn from "./alert/alertbtn"//告警总览
+import AlertBtn from "./alert/alertbtn"//告警按钮
 export default{
     components: {
         HomeHead,//头部
+        SportOverview,//运动总览
         AlertOverview,//告警总览
         AlertDetails,//告警详情
-        AlertBtn
+        AlertBtn,//告警按钮
     },
     data(){
         return{
@@ -69,10 +73,6 @@ export default{
                         },
                         {
                             listindex:"0-5",
-                            listname:"停车未熄火报表"
-                        },
-                        {
-                            listindex:"0-6",
                             listname:"ACC报表"
                         },
                     ]
@@ -98,10 +98,6 @@ export default{
                         {
                             listindex:"2-1",
                             listname:"电量统计"
-                        },
-                        {
-                            listindex:"2-2",
-                            listname:"油感报表"
                         }
                     ]
                 },
@@ -118,48 +114,6 @@ export default{
                             listname:"告警详情"
                         }
                     ]
-                },
-                {
-                    index:"4",
-                    titlename:'OBD统计',
-                    list:[
-                        {
-                            listindex:"4-0",
-                            listname:"OBD里程报表"
-                        },
-                        {
-                            listindex:"4-1",
-                            listname:"行程报表"
-                        },
-                        {
-                            listindex:"4-2",
-                            listname:"车况报表"
-                        },
-                        {
-                            listindex:"4-3",
-                            listname:"故障报表"
-                        }
-                    ]
-                },
-                {
-                    index:"5",
-                    titlename:'导游播报统计',
-                    list:[
-                        {
-                            listindex:"5-0",
-                            listname:"导游播报统计"
-                        }
-                    ]
-                },
-                {
-                    index:"6",
-                    titlename:'打卡统计',
-                    list:[
-                        {
-                            listindex:"6-0",
-                            listname:"打卡报表"
-                        }
-                    ]
                 }
             ],//左边菜单列表数组
 
@@ -173,7 +127,7 @@ export default{
 }
 /* 左边菜单部分 */
 .menu-tab{
-    width: 200px;
+    width: 170px;
     border-right: 1px solid #ccc;
 }
 .menu-top{
@@ -192,7 +146,7 @@ export default{
 }
 /* 右边报表详情部分 */
 .report-wrap{
-    width: calc(100% - 200px);
+    width: calc(100% - 170px);
 }
 
 .alert-icon{

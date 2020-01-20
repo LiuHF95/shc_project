@@ -11,6 +11,7 @@ import Report from '@/components/reportform/report'//统计报表
 import Distributed from '@/components/distributed'//设备分布
 import Hihi from '@/components/hihi'
 import A from '@/components/aaa'
+import B from '@/components/b'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/a',
       name: 'A',
       component: A
+    },
+    {
+      path: '/b',
+      name: 'B',
+      component: B
     },
     {
       path: '/hihi',

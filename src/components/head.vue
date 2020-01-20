@@ -18,11 +18,11 @@
           </li>
         </ul>
         <!--搜索按钮-->
-        <div class="search-wrap">
+        <!-- <div class="search-wrap">
           <span class="search"></span>
-        </div>
+        </div> -->
         <!--右边栏导航-->
-        <div class="nav-right-wrap">
+        <div class="nav-right-wrap" v-show="right">
           <div class="user-time">您好，<span class="user-name">{{username}}</span></div>
           <div class="system-tools">
             <!-- <span class="tools-list">消息中心(<span class="no-num">{{noNum}}</span>未读)</span> -->
@@ -60,6 +60,7 @@ export default {
     return {
       username: '豪斯石油',
       noNum:1,
+      right:false,
       navList:[
         {listname:"控制台",route:"/"},
         {listname:"设备管理",route:"/devicemanage"},
@@ -92,9 +93,9 @@ export default {
   height:100%;
   padding:0 15px;
 }
-.logo-wrap{
+/* .logo-wrap{
   ovflow:hidden;
-}
+} */
 .logo-wrap>*{
   float:left;
 }
@@ -106,9 +107,9 @@ export default {
 .logo{
   height:36px;
 }
-.nav-wrap{
+/* .nav-wrap{
   ovflow:hidden;
-}
+} */
 .nav-list{
   float:left;
   font-size:14px;
@@ -217,6 +218,4 @@ export default {
   padding: 6px 8px;
   text-align: center;
 }
-
-
 </style>
